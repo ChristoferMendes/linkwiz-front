@@ -61,6 +61,7 @@ export function ShortUrlInput() {
       error: "Error creating short URL",
       success: (data: Url) => {
         handleSaveOnLocalStorage(data);
+        document.querySelector<HTMLInputElement>("input[name=url]")!.value = "";
         return "Short URL created!";
       },
       loading: "Creating short URL...",

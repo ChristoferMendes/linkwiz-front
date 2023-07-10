@@ -19,7 +19,7 @@ export function NavLinks() {
           key={route.name}
           className={`${
             route.href === pathname && "bg-dark text-white"
-          } py-2 text-center rounded-lg w-28 text-sm`}
+          } py-2 text-center rounded-lg w-28 text-sm `}
         >
           {route.name}
         </Link>

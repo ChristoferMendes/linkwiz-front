@@ -21,6 +21,9 @@ module.exports = {
       fontFamily: {
         "montserrat-alternates": ["var(--font-montserrat-alternates)", "serif"],
       },
+      screens: {
+        xs: "475px",
+      },
     },
   },
   plugins: [require("daisyui")],
