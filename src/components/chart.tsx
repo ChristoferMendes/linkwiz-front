@@ -1,51 +1,76 @@
 import React from "react";
-import { Bar } from "react-chartjs-2";
+import { Bar, Chart } from "react-chartjs-2";
+import {
+  Chart as ChartJS,
+  LinearScale,
+  CategoryScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Legend,
+  Tooltip,
+  ChartData,
+  ChartOptions,
+} from "chart.js";
+import { AnalyticsData, ChartDataProps } from "@/entities/Url/types";
 
-interface DayData {
-  day: string;
-  count: number;
-}
-
-interface WeekData {
-  week: number;
-  count: number;
-  days: DayData[];
-}
+ChartJS.register(
+  LinearScale,
+  CategoryScale,
+  BarElement,
+  PointElement,
+  LineElement,
+  Legend,
+  Tooltip
+);
 
 interface ChartProps {
-  data: WeekData[];
+  data: AnalyticsData;
 }
 
-const Chart = ({ data }: ChartProps) => {
-  // Extrair os dias e contagens do payload
-  const days = data.flatMap((week) => week.days.map((day) => day.day));
-  const counts = data.flatMap((week) => week.days.map((day) => day.count));
+const ClickChart = ({ data: chartData }: ChartProps) => {
+  if (!chartData.weeks?.length) {
+    return null;
+  }
 
-  // Configurar os dados para o gráfico de barras
-  const chartData = {
-    labels: days,
-    datasets: [
-      {
-        label: "Count",
-        data: counts,
-        backgroundColor: "rgba(75, 192, 192, 0.5)",
-        borderColor: "rgb(75, 192, 192)",
-        borderWidth: 1,
-      },
-    ],
-  };
-
-  // Configurar as opções do gráfico
-  const chartOptions = {
+  const options: ChartOptions<"bar"> = {
     scales: {
       y: {
         beginAtZero: true,
-        stepSize: 1,
+      },
+    },
+    plugins: {
+      tooltip: {
+        enabled: true,
+        filter(e) {
+          e.label = `Clicks ${e.formattedValue}`;
+          return true;
+        },
       },
     },
   };
 
-  return <Bar data={chartData} options={chartOptions} />;
+  const labels = chartData.weeks.map((data) => `Week ${data.week}`);
+
+  const datasets: ChartData<"bar">["datasets"] = chartData.weeks.map((data) => {
+    const dataCount = data.days.map((day) => day.count);
+
+    return {
+      type: "bar" as const,
+      label: `Week ${data.week}`,
+      backgroundColor: "rgb(75, 192, 192)",
+      borderWidth: 2,
+      fill: false,
+      data: data.days.map((day) => day.count),
+    };
+  });
+
+  const data = {
+    labels,
+    datasets,
+  };
+
+  return <Chart data={data} options={options} type="bar" />;
 };
 
-export default Chart;
+export default ClickChart;

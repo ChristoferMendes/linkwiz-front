@@ -1,7 +1,12 @@
+import { ClientUrlWrapper } from "@/components/client-url-wrapper";
+import { LinksAnalytics } from "@/components/links-analytics";
+
 export default function Analytics() {
   return (
-    <div>
-      <p>Analytics</p>
-    </div>
+    <ClientUrlWrapper>
+      <div>
+        <LinksAnalytics />
+      </div>
+    </ClientUrlWrapper>
   );
 }

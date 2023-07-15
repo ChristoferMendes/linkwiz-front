@@ -1,6 +1,7 @@
+import { ClientUrlWrapper } from "@/components/client-url-wrapper";
 import { Nav } from "@/components/nav";
 import { ShortUrlInput } from "@/components/short-url-input";
-import { UrlCard } from "@/components/url-card";
+import { UrlCards } from "@/components/url-cards";
 import { BsLink } from "react-icons/bs";
 
 export default function Home() {
@@ -10,8 +11,10 @@ export default function Home() {
         <h1 className="font-bold text-lg xs:text-2xl sm:text-3xl">
           Share your links easier
         </h1>
-        <ShortUrlInput />
-        <UrlCard />
+        <ClientUrlWrapper>
+          <ShortUrlInput />
+          <UrlCards />
+        </ClientUrlWrapper>
       </div>
     </main>
   );

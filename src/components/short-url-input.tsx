@@ -1,11 +1,14 @@
 "use client";
 
 import { Url } from "@/entities/Url/types";
+import { useQueryClient } from "@tanstack/react-query";
 import { FormEvent, use } from "react";
 import { Toaster, toast } from "react-hot-toast";
 import { BsLink } from "react-icons/bs";
 
 export function ShortUrlInput() {
+  const queryClient = useQueryClient();
+
   const makeShortUrl = async (url: string) => {
     const response = await fetch("http://localhost:3000/url/short", {
       method: "POST",
@@ -16,25 +19,6 @@ export function ShortUrlInput() {
     });
 
     return response.json();
-  };
-
-  const dispatchLocalStorageChangedEvent = () => {
-    dispatchEvent(new Event("storage"));
-  };
-
-  const handleSaveOnLocalStorage = (data: Url) => {
-    const previousItems = localStorage.getItem("url");
-
-    if (!previousItems) {
-      localStorage.setItem("url", JSON.stringify([data]));
-      dispatchLocalStorageChangedEvent();
-      return;
-    }
-
-    const parsedPreviousItems: Url[] = JSON.parse(previousItems);
-
-    localStorage.setItem("url", JSON.stringify([...parsedPreviousItems, data]));
-    dispatchLocalStorageChangedEvent();
   };
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
@@ -60,7 +44,11 @@ export function ShortUrlInput() {
     toast.promise(makeShortUrlPromise, {
       error: "Error creating short URL",
       success: (data: Url) => {
-        handleSaveOnLocalStorage(data);
+        queryClient.setQueryData<Url[]>(["urls"], (urls) => {
+          if (!urls?.length) return [data];
+
+          return [...urls, data];
+        });
         document.querySelector<HTMLInputElement>("input[name=url]")!.value = "";
         return "Short URL created!";
       },
