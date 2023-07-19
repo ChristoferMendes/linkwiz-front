@@ -4,12 +4,22 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const routes = [
-  { name: "Home", href: "/" },
-  { name: "Your links", href: "/analytics" },
+  { name: "Home", href: "/", isDynamic: false },
+  { name: "Your links", href: "/analytics", isDynamic: true },
 ];
 
 export function NavLinks() {
   const pathname = usePathname();
+
+  const verifyRouteIsActual = (route: string, isDynamic: boolean) => {
+    const pathNameSerialized = isDynamic
+      ? "/" + pathname.split("/")[1]
+      : pathname;
+
+    console.log(pathNameSerialized);
+
+    return route === pathNameSerialized;
+  };
 
   return (
     <>
@@ -18,7 +28,8 @@ export function NavLinks() {
           href={route.href}
           key={route.name}
           className={`${
-            route.href === pathname && "bg-dark text-white"
+            verifyRouteIsActual(route.href, route.isDynamic) &&
+            "bg-dark text-white"
           } py-2 text-center rounded-lg w-28 text-sm `}
         >
           {route.name}

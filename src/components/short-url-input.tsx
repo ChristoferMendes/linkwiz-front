@@ -35,7 +35,9 @@ export function ShortUrlInput() {
     const urlRegex =
       /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/;
 
-    if (!urlRegex.test(url as string)) {
+    const isValidUrl = urlRegex.test(url as string);
+
+    if (!isValidUrl) {
       return toast.error("Invalid URL");
     }
 
