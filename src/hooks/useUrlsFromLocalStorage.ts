@@ -13,6 +13,7 @@ export const useUrls = () => {
 
   const getItems = async () => {
     const urls = getItemsOnLocalStorage();
+    console.log(urls);
 
     if (!urls?.length) return [];
 

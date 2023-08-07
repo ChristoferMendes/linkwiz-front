@@ -1,8 +1,6 @@
 import { ClientUrlWrapper } from "@/components/client-url-wrapper";
-import { Nav } from "@/components/nav";
 import { ShortUrlInput } from "@/components/short-url-input";
 import { UrlCards } from "@/components/url-cards";
-import { BsLink } from "react-icons/bs";
 
 export default function Home() {
   return (

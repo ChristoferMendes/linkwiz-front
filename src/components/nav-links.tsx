@@ -16,8 +16,6 @@ export function NavLinks() {
       ? "/" + pathname.split("/")[1]
       : pathname;
 
-    console.log(pathNameSerialized);
-
     return route === pathNameSerialized;
   };
 
